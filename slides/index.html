@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Running Open edX in production with Docker — France Université Numérique</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans:300,300i,400,400i,600,600i" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/reveal.js/css/reveal.css">
+  <link rel="stylesheet" href="../assets/reveal.js/css/theme/white.css">
+  <link rel="stylesheet" href="../assets/css/fontawesome-all.css">
+
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="../assets/css/hljs/github.css">
+
+  <!-- Custom fonts/theme -->
+  <link rel="stylesheet" href="../assets/css/custom.css">
+
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match(/print-pdf/gi) ? '../assets/reveal.js/css/print/pdf.css' : '../assets/reveal.js/css/print/paper.css';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  </script>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section data-markdown class="title">
+        <script type="text/template">
+          # Scaling our infrastructure with microservices
+
+          France Université Numérique
+
+          <small>
+            [Tech for OER day](https://www.x5gon.org/event/tech-for-oer)
+            — Nantes, France
+            — October 16, 2018
+          </small>
+
+          <img src="../assets/images/logo-france-universite-numerique.png"
+               width="150px" alt="Logo FUN"/>
+        </script>
+      </section>
+
+      <section>
+          <i class="fab fa-github fa-2x"></i> <i class="fab fa-twitter fa-2x"></i>
+          <p>@sampaccoud</p>
+      </section>
+
+      <section data-markdown>
+          ![FUN Figures](../assets/images/fun_figures.png)
+      </section>
+
+      <section data-markdown>
+          # Outline
+
+          1. Maintaining a Monolith
+          2. Moving to Microservices
+          3. Discussion
+      </section>
+
+      <section>
+        <section data-markdown>
+          # Maintaining a Monolith
+        </section>
+
+        <section>
+            <img src="../assets/images/monolith_architecture.png"/>
+        </section>
+
+        <section>
+            <img style="border: 1px solid black;" src="../assets/images/gas_works.gif"/>        
+          </section>
+        
+          <section>
+              <img style="border: 1px solid black;" src="../assets/images/travolta.gif" width="60%">
+            </section>
+
+        <section>
+          <h2>Technical debt</h2>
+          <ul>
+            <li>One big team, not agile</li>
+            <li>Recruitment is complicated</li>
+            <li>Modifications hard to do <span style="font-size: 0.6em; color: #777777;">on the whole system</span></li>
+            <li>Hard to operate and scale</li>
+            <li>It's a closed world <span style="font-size: 0.6em; color: #777777;">doesn't work with other LMS, LRS, etc.</span></li>
+            <li>It doesn't play well with mobile <span style="font-size: 0.6em; color: #777777;">especially apps (games, chat,...)</span></li>
+            <li>Each university has specific requirements</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Grow the monster?</h1>
+        </section>
+
+      </section>
+
+      <section>
+        <section data-markdown>
+          # Moving to Microservices
+        </section>
+
+        <section data-background="../assets/images/long_vs_short_term.jpg"></section>
+
+        <section data-background-video="../assets/images/refactoring.mp4" data-background-video-loop data-background-size="contain"></section>
+
+        <section>
+            <img src="../assets/images/mikado_method.jpg"/>
+        </section>
+
+        <section data-background="../assets/images/mikado.jpg"></section>
+
+        <section>
+          <img src="../assets/images/refacto_stage1.png"/>
+        </section>
+
+        <section>
+            <p><img src="../assets/images/multi_lms.png"></p>        
+        </section>
+       
+        <section>
+          <h2>A portal for Open Education</h2>
+          <h3><a style="font-size: 0.6em;" href="https://www.github.com/openfun/richie">github.com/openfun/richie</a></h3>
+          <ul>
+            <li>Intertwined pages <span style="font-size: 0.6em; color: #777777;">universities, courses, teachers and themes</span></li>
+            <li>Advanced search <span style="font-size: 0.6em; color: #777777;">full-text, multi-facetting, auto-complete</span></li>
+            <li>Multi-lingual</li>
+            <li>Front-end editing</li>
+            <li>Access rights and publication workflow</li>
+            <li>Flexible and extensible <span style="font-size: 0.6em; color: #777777;">based on Django CMS</span></li>
+          </ul>
+        </section>
+
+        <section>
+            <p><img src="../assets/images/lti_explained.png"></p>        
+        </section>
+        
+        <section>
+          <h2>An LTI video provider</h2>
+          <h3><a style="font-size: 0.6em;" href="https://www.github.com/openfun/marsha">github.com/openfun/marsha</a></h3>
+          <ul>
+            <li>Serverless encoding with Amazon AWS</li>
+            <li>LTI authentication</li>
+            <li>Adaptive Bit Rate <span style="padding-left:10px;font-size: 0.6em; color: #777777;">DASH, HLS</span></li>
+            <li>Multi-player <span style="padding-left:10px;font-size: 0.6em; color: #777777;">Plyr, Opensource, Accessible and ABR</span></li>
+            <li>xAPI analytics</li>
+            <li>Subtitles, transcripts</li>
+          </ul>
+        </section>
+
+        <section>
+            <img src="../assets/images/refacto_stage2.png"/>
+        </section>
+
+        <section data-background="../assets/images/microservices_architecture.png" data-background-size="contain"></section>
+
+        <section data-background="../assets/images/cabling.jpg"></section>
+
+        <section>
+          <p><img src="../assets/images/docker_kubernetes_openshift.png" width="600"></p>
+        </section>
+          
+        <section>
+          <h2>A deployment tool for OpenShift</h2>
+          <h3><a style="font-size: 0.6em;" href="https://www.github.com/openfun/arnold">github.com/openfun/arnold</a></h3>
+          <ul>
+            <li>Built on Ansible with <a href="https://docs.ansible.com/ansible/2.6/modules/k8s_module.html">k8s</a>
+            <li>Blue/Green deployments with rollbacks</li>
+            <li>Multi-customer, multi-environment</li>
+            <li>App templates with flexible defaults / overrides</li>
+            <li>Managing secrets with Ansible vault and PGP keys</li>
+            <li>Automated SSL certificates with Let's Encrypt</li>
+          </ul>
+        </section>
+         
+        <section>
+          <h1>🐳 Docker images</h1>
+          <table style="font-size:0.6em;">
+            <tr>
+              <td><a href="https://github.com/openfun/openshift-docker" target="_blank">github.com/openfun/openshift-docker</a></td>
+              <td>Docker images adapted to OpenShift for related services <span style="font-size: 0.6em;">(nginx, elasticsearch, etc.)</span></td>
+            </tr>
+            <tr>
+                <td width="50%"><a href="https://github.com/openfun/openedx-docker" target="_blank">github.com/openfun/openedx-docker</a></td>
+                <td>Native Docker image of Open edX</td>
+              </tr>
+            <tr>
+              <td><a href="https://github.com/openfun/richie" target="_blank">github.com/openfun/richie</a></td>
+              <td>Native Docker image of Richie, a CMS for Open edX based on <a href="https://www.django-cms.org">DjangoCMS</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://github.com/openfun/marsha" target="_blank">github.com/openfun/marsha</a></td>
+                <td>Native Docker image of Marsha, an LTI video provider</td>
+              </tr>
+          </table>
+          <br>
+          <p>Built on CircleCI and pushed to <a href="https://hub.docker.com/r/fundocker" target="_blank">Docker Hub</a></p>
+        </section>
+
+        <section>
+          <h1 style="font-size:3em;">👷</h1>
+          <p><a href="https://www.github.com/openfun">github.com/openfun</a></p>
+          <p>100% opensource</p>
+          <p>MIT licence</p>
+        </section>
+
+        <section data-background="../assets/images/microservices_architecture.png" data-background-size="contain"></section>
+
+      </section>
+
+      <section>
+        <p style="font-size:4em;">🍻</p>
+        Contributions welcome
+      </section>
+
+      <section data-markdown>
+        ## Sources for these slides at
+        https://github.com/openfun/nantes-oer
+      </section>
+
+      <section>
+        <p>🙏 Thank you!</p>
+        <p>👊 Get in touch:</p>
+        <p><a href="mailto:fun.dev@fun-mooc.fr">fun.dev@fun-mooc.fr</a></p>
+        <p><i class="fab fa-github"></i> <a href="https://github.com/openfun">openfun</a></p>
+        <p>🎓 Open Source for Education</p>
+      </section>
+    </div>
+  </div>
+
+  <script src="../assets/reveal.js/lib/js/head.min.js"></script>
+  <script src="../assets/reveal.js/js/reveal.js"></script>
+
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      dependencies: [
+        { src: '../assets/reveal.js/plugin/markdown/marked.js' },
+        { src: '../assets/reveal.js/plugin/markdown/markdown.js' },
+        { src: '../assets/reveal.js/plugin/zoom-js/zoom.js', async: true },
+        { src: '../assets/reveal.js/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+      ]
+    });
+  </script>
+</body>
+
+</html>

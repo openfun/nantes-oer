@@ -4,7 +4,7 @@ In this repository, you will find the slides and materials used by Samuel Paccco
 
 ### Scaling our Open Education infrastructure with microservices
 
-- [Slides](https://openfun.github.io/toer_nantes/slides/)
+- [Slides](https://openfun.github.io/nantes-oer/slides/)
 
 # License
 
